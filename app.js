@@ -1,14 +1,15 @@
-const express = require("express");
+const express = require('express')
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const app = express()
+const PORT = process.env.PORT || 3000
+const movies = require('./movies.json')
 
-app.disable("x-powered-by");
+app.disable('x-powered-by')
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello World" });
-});
+app.get('/movies', (req, res) => {
+  res.json(movies)
+})
 
 app.listen(PORT, () => {
-  console.log(`server listening on port http://localhost:${PORT}`);
-});
+  console.log(`server listening on port http://localhost:${PORT}`)
+})
