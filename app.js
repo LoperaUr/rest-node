@@ -1,7 +1,6 @@
 const express = require('express')
 const crypto = require('node:crypto')
 const movies = require('./movies.json')
-const z = require('zod')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -28,38 +27,18 @@ app.get('/movies/:id', (req, res) => {
 })
 
 app.post('/movies', (req, res) => {
-    const movieSchema = z.object({
-        title: z.string({
-            invalid_type_error: 'movie title must be a string',
-            required_error: 'movie title is required'
-        }),
-        year: z.number().int().min(1888).max(2077),
-        director: z.string(),
-        duration: z.number().min(1).max(10),
-        rate: z.number().min(0).max(10),
-        poster: z.string().url(),
-        genre: z.array(
-            z.enum(['Adventure', 'Drama', 'Sci-Fi', 'Action', 'Animation', 'Romance', 'Biography', 'Fantasy']),
-            {
-                required_error: 'genre is required',
-                invalid_type_error: 'genre must be an array of strings'
-            }
-        )
-    })
-    const { title, genre, year, director, duration, rate, poster } = req.body
+    const result = validateMovie(req.body)
+
+    if (result.error) {
+        return res.status(400).json({ error: result.error.message })
+    }
 
     const newMovie = {
         id: crypto.randomUUID,
-        title,
-        genre,
-        year,
-        director,
-        duration,
-        rate: rate ?? 0,
-        poster
+        ...req.body
     }
-    movies.push(newMovie)
 
+    movies.push(newMovie)
     res.status(201).json(newMovie)
 })
 
