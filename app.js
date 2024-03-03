@@ -6,7 +6,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 app.disable('x-powered-by')
-app.use(app.use(express.json()))
+app.use(express.json())
 
 app.get('/movies', (req, res) => {
     const { genre } = req.query
