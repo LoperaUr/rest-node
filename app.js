@@ -10,6 +10,7 @@ app.disable('x-powered-by')
 app.use(express.json())
 
 app.get('/movies', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     const { genre } = req.query
     if (genre) {
         const filteredMovies = movies.filter((movie) =>
@@ -62,6 +63,28 @@ app.patch('/movies/:id', (req, res) => {
         ...result.data
     }
     return res.json(updateMovie)
+})
+
+app.delete('/movies/:id', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+
+    const { id } = req.params
+    const movieIndex = movies.findIndex((movie) => movie.id === id)
+
+    if (movieIndex === -1) {
+        return res.status(404).json({ error: 'Movie not found' })
+    }
+
+    movies.splice(movieIndex, 1)
+
+    res.status(204).json({ message: 'Movie deleted' })
+})
+
+app.options('/movies/:id', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE')
+    res.header('Access-Control-Allow-Headers', 'Content-Type')
+    res.end()
 })
 
 app.listen(PORT, () => {
