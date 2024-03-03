@@ -1,8 +1,9 @@
 const express = require('express')
+const crypto = require('node:crypto')
+const movies = require('./movies.json')
 
 const app = express()
 const PORT = process.env.PORT || 3000
-const movies = require('./movies.json')
 
 app.disable('x-powered-by')
 app.use(app.use(express.json()))
@@ -25,7 +26,23 @@ app.get('/movies/:id', (req, res) => {
     res.status(404).json({ error: 'Movie not found' })
 })
 
-app.post('/movies', (req, res) => {})
+app.post('/movies', (req, res) => {
+    const { tittle, genre, year, director, duration, rate, poster } = req.body
+
+    const newMovie = {
+        id: crypto.randomUUID,
+        tittle,
+        genre,
+        year,
+        director,
+        duration,
+        rate: rate ?? 0,
+        poster
+    }
+    movies.push(newMovie)
+
+    res.status(201).json(newMovie)
+})
 
 app.listen(PORT, () => {
     console.log(`server listening on port http://localhost:${PORT}`)
