@@ -7,3 +7,19 @@ GET http://localhost:3000/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
 
 ### get a movie filter by genre
 GET http://localhost:3000/movies?genre=drama
+
+### create new movie
+POST http://localhost:3000/movies
+Content-Type: application/json
+
+{
+    "tittle": "The Godfather",
+    "year": 1972,
+    "director": "Francis Ford Coppola",
+    "duration": 175,
+    "poster": "https://www.imdb.com/title/tt0068646/mediaviewer/rm4283873280",
+    "genre": [
+        "Crime",
+        "Drama"
+    ]
+}
