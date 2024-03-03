@@ -1,7 +1,7 @@
 const express = require('express')
 const crypto = require('node:crypto')
 const movies = require('./movies.json')
-const { validateMovie } = require('./schemas/movies-schema')
+const { validateMovie } = require('./schemas/movies')
 
 const app = express()
 const PORT = process.env.PORT || 3000
