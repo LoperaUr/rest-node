@@ -1,6 +1,7 @@
 const express = require('express')
 const crypto = require('node:crypto')
 const movies = require('./movies.json')
+const { validateMovie } = require('./schemas/movies')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -30,7 +31,7 @@ app.post('/movies', (req, res) => {
     const result = validateMovie(req.body)
 
     if (result.error) {
-        return res.status(400).json({ error: result.error.message })
+        return res.status(400).json({ error: JSON.parse(result.error.message) })
     }
 
     const newMovie = {
