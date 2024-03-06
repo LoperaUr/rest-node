@@ -1,13 +1,14 @@
-const express = require('express')
-const crypto = require('node:crypto')
-const movies = require('./movies.json')
-const { validateMovie, validatePartialMovie } = require('./schemas/movies')
+import express, { json } from 'express'
+import { randomUUID } from 'node:crypto'
+
+import movies from './movies.json' with { type: 'json' }
+import { validateMovie, validatePartialMovie } from './schemas/movies.js'
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
 app.disable('x-powered-by')
-app.use(express.json())
+app.use(json())
 
 app.get('/movies', (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
@@ -36,7 +37,7 @@ app.post('/movies', (req, res) => {
     }
 
     const newMovie = {
-        id: crypto.randomUUID(),
+        id: randomUUID(),
         ...result.data
     }
 
