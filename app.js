@@ -1,7 +1,7 @@
 import express, { json } from 'express'
 import { randomUUID } from 'node:crypto'
 
-import movies from './movies.json' with { type: 'json' }
+import movies from './movies.json' assert { type: 'json' }
 import { validateMovie, validatePartialMovie } from './schemas/movies.js'
 
 const app = express()
