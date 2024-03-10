@@ -1,12 +1,12 @@
 import { Router } from 'express'
 import { randomUUID } from 'node:crypto'
 
-import movies from './movies.json' assert { type: 'json' }
-import { validateMovie, validatePartialMovie } from './schemas/movies.js'
+import { validateMovie, validatePartialMovie } from '../schemas/movies.js'
+import movies from '../movies.json' assert { type: 'json' }
 
-const router = Router()
+export const movieRouter = Router()
 
-router.get('/', (req, res) => {
+movieRouter.get('/', (req, res) => {
   const { genre } = req.query
   if (genre) {
     const filteredMovies = movies.filter((movie) => movie.genre.some((g) => g.toLowerCase() === genre.toLowerCase()))
@@ -15,14 +15,14 @@ router.get('/', (req, res) => {
   res.json(movies)
 })
 
-router.get('/:id', (req, res) => {
+movieRouter.get('/:id', (req, res) => {
   const { id } = req.params
   const movie = movies.find((movie) => movie.id === id)
   if (movie) return res.json(movie)
   res.status(404).json({ error: 'Movie not found' })
 })
 
-router.post('/', (req, res) => {
+movieRouter.post('/', (req, res) => {
   const result = validateMovie(req.body)
 
   if (!result.success) {
@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
   res.status(201).json(newMovie)
 })
 
-router.patch('/', (req, res) => {
+movieRouter.patch('/', (req, res) => {
   const result = validatePartialMovie(req.body)
 
   if (!result.success) {
@@ -59,9 +59,7 @@ router.patch('/', (req, res) => {
   return res.json(updateMovie)
 })
 
-router.delete('/', (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*')
-
+movieRouter.delete('/', (req, res) => {
   const { id } = req.params
   const movieIndex = movies.findIndex((movie) => movie.id === id)
 
@@ -74,9 +72,9 @@ router.delete('/', (req, res) => {
   res.status(204).json({ message: 'Movie deleted' })
 })
 
-app.options('/movies/:id', (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE')
-  res.header('Access-Control-Allow-Headers', 'Content-Type')
-  res.end()
-})
+// app.options('/movies/:id', (req, res) => {
+//   res.header('Access-Control-Allow-Origin', '*')
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE')
+//   res.header('Access-Control-Allow-Headers', 'Content-Type')
+//   res.end()
+// })
