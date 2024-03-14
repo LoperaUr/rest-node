@@ -39,3 +39,9 @@ Content-Type: application/json
 
 https://65f24a1b034bdbecc7648c49.mockapi.io/docs/v1/users
 
+
+### get all books 
+
+GET http://localhost:3000/books?genre=Fiction
+
+### get 
