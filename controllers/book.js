@@ -1,4 +1,4 @@
-import { BookModel } from '../models/book.js'
+import { BookModel } from '../models/local-file/book.js'
 import { validateBook, validatePartialBook } from '../schemas/book.js'
 
 export class BookController {

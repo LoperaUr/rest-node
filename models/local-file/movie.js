@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import movies from '../movies.json' assert { type: 'json' }
+import movies from '../../movies.json' assert { type: 'json' }
 
 export class MovieModel {
   static async getAll({ genre }) {

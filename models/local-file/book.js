@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import books from '../books.json' assert { type: 'json' }
+import books from '../../books.json' assert { type: 'json' }
 
 export class BookModel {
   static async getAll({ genre }) {
